@@ -2,6 +2,7 @@ import os
 import tornado.ioloop
 import tornado.web
 import tornado.locks
+from handlers import HomeHandler, MessageHandler
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -15,6 +16,7 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
             (r"/", HomeHandler),
+            (r"/message", MessageHandler)
         ]
         settings = dict(
             template_path = os.path.join(os.path.dirname(__file__), "templates"),
@@ -22,12 +24,6 @@ class Application(tornado.web.Application):
             debug = True,
         )
         super(Application, self).__init__(handlers, **settings)
-
-
-class HomeHandler(tornado.web.RequestHandler):
-
-    async def get(self):
-        self.render("home.html")
 
 
 async def main():
